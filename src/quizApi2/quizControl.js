@@ -73,7 +73,7 @@ const calcScore = (object1, object2) => {
 };
 
 // ----------------------------------------
-// create a quiz
+// create a quiz (from quiz.js)
 // ----------------------------------------
 exports.createQuiz = (req, res) => {
   try {
@@ -96,15 +96,11 @@ exports.getQuiz = (req, res) => {
 // ----------------------------------------
 // create a new user file
 // ----------------------------------------
-exports.createNewUser = (req, res) => {
-  if (!req.params.username) {
-    throw new Error("no user name was given");
-  }
-  const userName = req.params.username;
+exports.createNewUser = (userName) => {
   const userId = generateId();
   try {
     const newProfile = { name: userName, id: userId };
-    return res.send(writeFile(userName, newProfile));
+    return writeFile(userName, newProfile);
   } catch (error) {
     throw error;
   }

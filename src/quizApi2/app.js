@@ -6,10 +6,10 @@ const port = 3005;
 const app = express();
 app.use(bodyParser.json());
 
-// TODO error handling
+// TODO fix error handling - every function should handle the errors of it's own responsibility.
 
 // ----------------------------------------
-// create a quiz
+// create a quiz (from file quiz.js)
 // ----------------------------------------
 app.post("/quiz/create", quizControl.createQuiz);
 // ----------------------------------------
@@ -19,7 +19,16 @@ app.get("/quiz", quizControl.getQuiz);
 // ----------------------------------------
 // receive new username and create new json file
 // ----------------------------------------
-app.post("/quiz/:username/create", quizControl.createNewUser);
+// app.post("/quiz/:username/create", quizControl.createNewUser);
+// TODO rewrite the functions so the app will handle the req and res and send what is relevant to the quizControl functions
+app.post("/quiz/:username/create", (req, res) => {
+  if (!req.params.username) {
+    throw new Error("no user name was given");
+  }
+  const userName = req.params.username;
+  const newUserProfile = quizControl.createNewUser(userName);
+  res.send(newUserProfile);
+});
 // ----------------------------------------
 // receive answers and update user file
 // ----------------------------------------
